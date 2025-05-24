@@ -4,13 +4,13 @@ import db from '../database/db.js'
 const router = express.Router();
 
 router.post('/create', async (req, res) => {
-  const { use_name, use_email, use_birth, use_register, use_status } = req.body;
+  const { use_name, use_email, use_birth, use_register } = req.body;
 
   try {
     const [result] = await db.execute(
-      `INSERT INTO use_users (use_name, use_email, use_birth, use_register, use_status)
-       VALUES (?, ?, ?, ?, ?)`,
-      [use_name, use_email, use_birth, use_register, use_status ?? 1]
+      `INSERT INTO use_users (use_name, use_email, use_birth, use_register)
+       VALUES (?, ?, ?, ?)`,
+      [use_name, use_email, use_birth, use_register]
     );
 
     res.status(201).json({ id: result.insertId });
