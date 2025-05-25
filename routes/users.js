@@ -20,9 +20,9 @@ router.post('/create', async (req, res) => {
   }
 });
 
-router.get('/selectAll', async (res) => {
+router.get('/selectAll', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM use_users');
+    const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1');
 
     res.json(rows);
   }
