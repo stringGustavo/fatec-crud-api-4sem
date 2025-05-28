@@ -1,8 +1,12 @@
 # Criação de uma API REST
 
-O objetivo deste repositório é ensinar passo a passo a criação de uma API REST simples com Node.js que será utilizada para o funcionamento de um CRUD feito em React + Vite.
+Este repositório tem como objetivo ensinar, passo a passo, a criação de uma API REST simples, que servirá de *backend* para um CRUD de cadastro de usuários, desenvolvido com React + Vite no *frontend* e Node.js no *backend*.
 
-Link do FrontEnd: ---
+
+### Acesse aqui o [Repositório do FrontEnd](https://github.com/stringGustavo/fatec-crud-front-4sem)
+<br>
+
+## Criando o Projeto e Instalando Dependências
 
 Primeiramente, crie uma pasta chamada ```crud-api```. Abra o terminal do *Visual Studio Code* com o comando ```Ctrl + '``` e acesse a pasta criada digitando o comando ```cd crud-api``` no terminal.
 
@@ -27,7 +31,7 @@ Para conferir se as dependências foram instaladas coretamente procure pelo arqu
     "express": "^5.1.0",
     "mysql2": "^3.14.1"
   },
-  "type": "module" // indica que o projeto está usando módulos ES e não CommonJS.
+  "type": "module" // Indica que o projeto está usando ES Module e não CommonJS.
 }
 ```
 
@@ -55,16 +59,16 @@ Dentro de ```crud-api``` crie 3 novas pastas para organizar a API, sendo elas:
 
 ## Criando e exportando a conexão com o banco
 
-No arquivo ```db.js``` adicione o seguinte código:
+No arquivo ```db.js``` adicione o seguinte código abaixo.
 
 ```js
-import mysql from 'mysql2/promise';
+import mysql from 'mysql2/promise'; // Importação da versão do mysql2 que funciona com Promises e pode ser usada com async/await.
 
 const connection = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '0000', // coloque aqui a sua senha do MySQL Workbench. Caso não tenha senha, apague o campo password ou deixe vazio.
-  database: 'db_crud', // coloque aqui o nome do banco que você criou.
+  password: '0000', // Insira aqui a sua senha do MySQL Workbench. Caso não tenha senha, apague o campo password ou deixe vazio.
+  database: 'db_crud', // Insira aqui o nome do banco que você criou.
 });
 
 export default connection;
@@ -86,17 +90,15 @@ CREATE TABLE IF NOT EXISTS `use_users` (
 );
 ```
 
-## In
-
 ## Criando os endpoints da API
 
-No arquivo ```users.js``` adicione o seguinte código:
+No arquivo ```users.js``` adicione o seguinte código abaixo.
 
 ```js
-import express from 'express'; // importação do express.
-import db from '../database/db.js' // impotação da conexão com o banco feita acima.
+import express from 'express'; // Importação do express.
+import db from '../database/db.js' // Importação da conexão com o banco feita acima.
 
-const router = express.Router(); // cria o módulo de rotas do express.
+const router = express.Router(); // Cria o módulo de rotas do express.
 ```
 
 <details>
@@ -123,8 +125,8 @@ router.post('/create', async (req, res) => {
 
   try {
     const [result] = await db.execute(
-      `INSERT INTO use_users (use_name, use_email, use_birth, use_register) VALUES (?, ?, ?, ?)`, // query SQL que será enviada para o banco.
-      [use_name, use_email, use_birth, use_register] // valores que irão preencher em ordem cada '?' do 'VALUES'.
+      `INSERT INTO use_users (use_name, use_email, use_birth, use_register) VALUES (?, ?, ?, ?)`, // Query SQL que será enviada para o banco.
+      [use_name, use_email, use_birth, use_register] // Valores que irão preencher em ordem cada '?' do 'VALUES'.
     );
 
     res.status(201).json({ id: result.insertId }); // Se tudo der certo, retorna o código 201 'Created' e um json com o id que foi criado/inserido.
@@ -147,7 +149,7 @@ router.get('/selectAll', async (req, res) => {
   try {
     const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1 ORDER BY use_id DESC'); // DESC para mostrar o usuário que foi cadastrado por último.
 
-    res.json(rows); // retorna os dados encotrados.
+    res.json(rows); // Retorna os dados encotrados.
   }
   catch (err) {
     res.status(500).json({ error: err.message }); // Se algo der errado, retorna o código 500 'Server Internal Error' e uma mensagem de erro.
@@ -169,9 +171,9 @@ router.put('/update/:id', async (req, res) => { // Neste caso, além do corpo (b
   try {
     const [result] = await db.execute(
       `UPDATE use_users SET use_name = ?, use_email = ?, use_birth = ? WHERE use_id = ?`,
-      [use_name, use_email, use_birth, req.params.id] // valores que irão preencher em ordem cada '?' do 'VALUES'.
+      [use_name, use_email, use_birth, req.params.id] // Valores que irão preencher em ordem cada '?'.
     );
-    res.json({ updated: result.affectedRows }); // retorna um json monstrando quantas linhas foram afetadas.
+    res.json({ updated: result.affectedRows }); // Retorna um json monstrando quantas linhas foram afetadas.
   }
   catch (err) {
     res.status(500).json({ error: err.message }); // Se algo der errado, retorna o código 500 'Server Internal Error' e uma mensagem de erro.
@@ -189,9 +191,9 @@ router.put('/update/:id', async (req, res) => { // Neste caso, além do corpo (b
 // Disponibilizando o método DELETE no endpoint '/delete/:id'
 router.delete('/delete/:id', async (req, res) => { // Neste caso, não precisamos do corpo (body) da requisição, mas o endpoint ainda precisa do parâmetro ':id' para saber qual usuário será deletado no banco.
   try {
-    const [result] = await db.execute('DELETE FROM use_users WHERE use_id = ?', [req.params.id]);
+    const [result] = await db.execute('DELETE FROM use_users WHERE use_id = ?', [req.params.id]); // req.params.id contém o valor do id enviado na request do Frontend.
 
-    res.json({ deleted: result.affectedRows }); // retorna um json monstrando quantas linhas foram afetadas.
+    res.json({ deleted: result.affectedRows }); // Retorna um json mostrando quantas linhas foram afetadas.
   }
   catch (err) {
     res.status(500).json({ error: err.message }); // Se algo der errado, retorna o código 500 'Server Internal Error' e uma mensagem de erro.
@@ -202,5 +204,28 @@ router.delete('/delete/:id', async (req, res) => { // Neste caso, não precisamo
 
 Não esqueça de exportar o modúlo no final do arquivo ```users.js```!
 ```js
-export default router; // exporta o módulo, permitindo que ele seja importado em outros arquivos do projeto.
+export default router; // Exporta o módulo, permitindo que ele seja importado em outros arquivos do projeto.
+```
+
+## Inicializando o servidor da API
+
+No arquivo  ```server.js``` dentro da pasta ```server``` adicione o código:
+
+```js
+import express from 'express'; // Importação do Express.
+import userRoutes from '../routes/users.js'; // Importação da rota users.js que foi criada acima.
+import cors from 'cors'; // Importação do CORS.
+
+const port = 3000; // Definindo a porta que a API vai rodar.
+const app = express(); // Instânciando o Express.
+
+app.use(cors()); // Habilita CORS para permitir requisições de outras origens.
+app.use(express.json()); // Utilização do Middleware do Express que interpreta o corpo das requisições HTTP no formato JSON. Responsável por popular o req.body.
+app.use('/users', userRoutes); // Define que todas as rotas dentro do userRoutes vão “começar” com /users.
+
+// Inicia o servidor Express na porta definida (3000).
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});
+
 ```
