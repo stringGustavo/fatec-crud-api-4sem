@@ -23,7 +23,7 @@ ou se preferir pode instalar tudo em um único comando utilizando:
 npm install express cors mysql2
 ```
 
-Para conferir se as dependências foram instaladas coretamente procure pelo arquivo ```package.json```, ele deve ter algo parecido com isso:
+Para conferir se as dependências foram instaladas corretamente, procure pelo arquivo ```package.json```, ele deve ter algo parecido com isso:
 ```json
 {
   "dependencies": {
@@ -40,11 +40,11 @@ Para conferir se as dependências foram instaladas coretamente procure pelo arqu
 
   ```express``` é um *framework* voltado para aplicações *web* que utilizam Node.js. Geralmente é utilizado na criação de APIs ou servidores HTTP. Com o *Express* é possível criar rotas e lidar com requisições HTTP (GET, POST, PUT e DELETE)
 
-  ```cors``` (Cross-Origin Resource Sharing) é um mecanismo de segurança utilizado pelos navegadores para controlar o acesso a recursos hospedados em domínios diferentes.
+  ```cors``` *(Cross-Origin Resource Sharing)* é um mecanismo de segurança utilizado pelos navegadores para controlar o acesso a recursos hospedados em domínios diferentes.
 
   Exemplo: Se esta API estiver rodando em `http://localhost:3000` e o *frontend* estiver em `http://localhost:3001`, o navegador irá bloquear as requisições, a menos que o servidor (API) permita explicitamente essa origem usando **CORS**.
 
-  ```mysql2``` é um *client* para conectar seu *backend* Node.js a um banco de dados MySQL ou MariaDB.
+  ```mysql2``` é um *client* para conectar seu *backend* Node.js a um banco de dados MySQL.
 </details>
 
 ## Estrutura de Pastas
@@ -55,7 +55,7 @@ Dentro de ```crud-api``` crie 3 novas pastas para organizar a API, sendo elas:
 
 ```server``` onde ficará o arquivo ```server.js``` responsável por inicializar o servidor da API.
 
-```routes``` onde ficará p arquivo ```users.js``` responsável por definir os *endpoints* da API para manipular dados de usuários no banco.
+```routes``` onde ficará o arquivo ```users.js``` responsável por definir os *endpoints* da API para manipular dados de usuários no banco.
 
 ## Criando e exportando a conexão com o banco
 
@@ -105,7 +105,7 @@ const router = express.Router(); // Cria o módulo de rotas do express.
 <summary>Informações Adicionais</summary>
 
   A palavra reservada ```async``` do javascript é utilizada para dizer que uma função é assíncrona, ou seja, ela não bloqueia a execução do restante do código. Dentro de uma função assíncrona
-  podemos encontrar outra palavra reservada chamada ```await``` que pausa a execução dentro de uma função ```async``` até a *Promise* ser resolvida. No caso do código dos *endpoints* abaixo o ```await``` vai "esperar"
+  podemos encontrar outra palavra reservada chamada ```await``` que pausa a execução dentro de uma função ```async``` até a *promise* ser resolvida. No caso do código dos *endpoints* abaixo, o ```await``` vai "esperar"
   uma resposta da função ```db.execute()``` para continuar a execução dos métodos HTTP.
   
   ```req``` (request): A requisição feita pelo cliente.
@@ -147,7 +147,7 @@ router.post('/create', async (req, res) => {
 // Disponibilizando o método GET no endpoint '/selectAll'.
 router.get('/selectAll', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1 ORDER BY use_id DESC'); // DESC para mostrar o usuário que foi cadastrado por último.
+    const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1 ORDER BY use_id DESC'); // DESC para mostrar os usuários por ordem decrescente.
 
     res.json(rows); // Retorna os dados encotrados.
   }
