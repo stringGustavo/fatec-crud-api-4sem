@@ -119,7 +119,7 @@ const router = express.Router(); // Cria o módulo de rotas do express.
   No protocolo HTTP, POST é utilizado para executar ações em um servidor ou inserir dados no banco de dados.
 
 ```js
-// Disponibilizando o método POST no endpoint '/create'
+// Disponibilizando o método POST no endpoint '/users/create'
 router.post('/create', async (req, res) => {
   const { use_name, use_email, use_birth, use_register } = req.body; // Utilizando desestruturação para preencher o corpo (body) da requisição com as informações vindas do Frontend.
 
@@ -144,7 +144,7 @@ router.post('/create', async (req, res) => {
   No protocolo HTTP, GET é utilizado para solicitar dados de um servidor.
 
 ```js
-// Disponibilizando o método GET no endpoint '/selectAll'.
+// Disponibilizando o método GET no endpoint '/users/selectAll'.
 router.get('/selectAll', async (req, res) => {
   try {
     const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1 ORDER BY use_id DESC'); // DESC para mostrar os usuários por ordem decrescente.
@@ -164,7 +164,7 @@ router.get('/selectAll', async (req, res) => {
   No protocolo HTTP, PUT é utilizado para atualizar ou criar um recurso no servidor.
 
 ```js
-// Disponibilizando o método PUT no endpoint '/update/:id'
+// Disponibilizando o método PUT no endpoint '/users/update/:id'
 router.put('/update/:id', async (req, res) => { // Neste caso, além do corpo (body) da requsição o endpoint precisa de um parâmetro ':id' para saber qual usuário no banco será atualizado.
   const { use_name, use_email, use_birth } = req.body; // Utilizando desestruturação para preencher o corpo (body) da requisição com as informações vindas do Frontend.
   
@@ -188,7 +188,7 @@ router.put('/update/:id', async (req, res) => { // Neste caso, além do corpo (b
   No protocolo HTTP, DELETE é utilizado para deletar recursos de um servidor.
 
 ```js
-// Disponibilizando o método DELETE no endpoint '/delete/:id'
+// Disponibilizando o método DELETE no endpoint '/users/delete/:id'
 router.delete('/delete/:id', async (req, res) => { // Neste caso, não precisamos do corpo (body) da requisição, mas o endpoint ainda precisa do parâmetro ':id' para saber qual usuário será deletado no banco.
   try {
     const [result] = await db.execute('DELETE FROM use_users WHERE use_id = ?', [req.params.id]); // req.params.id contém o valor do id enviado na request do Frontend.
