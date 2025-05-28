@@ -22,7 +22,7 @@ router.post('/create', async (req, res) => {
 
 router.get('/selectAll', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1');
+    const [rows] = await db.execute('SELECT * FROM use_users WHERE use_status = 1 ORDER BY use_id DESC');
 
     res.json(rows);
   }
@@ -32,13 +32,13 @@ router.get('/selectAll', async (req, res) => {
 });
 
 router.put('/update/:id', async (req, res) => {
-  const { use_name, use_email, use_birth, use_register, use_status } = req.body;
+  const { use_name, use_email, use_birth } = req.body;
   
   try {
     const [result] = await db.execute(
-      `UPDATE use_users SET use_name = ?, use_email = ?, use_birth = ?, use_register = ?, use_status = ?
+      `UPDATE use_users SET use_name = ?, use_email = ?, use_birth = ?
        WHERE use_id = ?`,
-      [use_name, use_email, use_birth, use_register, use_status, req.params.id]
+      [use_name, use_email, use_birth, req.params.id]
     );
     res.json({ updated: result.affectedRows });
   }
